@@ -17,9 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to GHCR
-        run: |
-             docker login ghcr.io -u Kritika6789 -p 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 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUBTOKEN }}
 
       - name: Build and Push Docker Images (tagged :latest)
         run: |
