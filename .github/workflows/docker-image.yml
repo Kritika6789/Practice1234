@@ -30,7 +30,7 @@ jobs:
 
           find . -type f -name 'Dockerfile' | while read dockerfile; do
             context_dir=$(dirname "$dockerfile")
-            image_name=$(echo "$context_dir" | sed 's|^\./||' | tr '/A-Z' '-a-z' | tr -c 'a-z0-9-_' '-')
+            image_name=$(echo "$context_dir" | sed 's|^\./||' | tr '/A-Z' '-a-z' | tr -c 'a-z0-9-_' '-' | sed 's/-*$//')
 
             image="ghcr.io/${{ github.repository_owner }}/$image_name:latest"
 
