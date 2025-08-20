@@ -26,19 +26,7 @@ jobs:
 
       - name: Build and Push Docker Images (tagged :latest)
         run: |
-          echo "🔍 Finding Dockerfiles..."
-
-          find . -type f -name 'Dockerfile' | while read dockerfile; do
-            context_dir=$(dirname "$dockerfile")
-            image_name=$(echo "$context_dir" | sed 's|^\./||' | tr '/A-Z' '-a-z' | tr -c 'a-z0-9-_' '-' | sed 's/-*$//')
-            owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-
-            image="ghcr.io/$owner/$image_name:latest"
-  
-
-            echo "🛠 Building $image from $dockerfile"
-            docker build -f "$dockerfile" -t "$image" "$context_dir"
-
-            echo "🚀 Pushing $image"
-            docker push "$image"
-          done
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          docker build -t myimage:latest ./multi-docker-project/service-a
+          docker tag myimage:latest ghcr.io/$owner/service-a:latest
+          docker push ghcr.io/$owner/service-a:latest
